@@ -1,20 +1,17 @@
 plugins:
-  # default:
-  #   - rss
-  #   - answer
-  #   - limit
-  #   - forward
-  #   # - dev
-  #   - teach
-  # official:
-  #   - hitokoto
-  #   - niubi
+  default:
+    - answer
+    - search
+    - rss
+    - nbnhhsh
+  official:
+    - setu
   custom:
     - ./bot/test
 
 rss:
-  - name: 云游君的小站
-    url: https://www.yunyoujun.cn/atom.xml
+  - name: Darc的博客
+    url: https://blog.darc.icu/atom.xml
     # cron: "*/1 * * * *"
     customFields:
       item:
@@ -27,7 +24,7 @@ rss:
     target:
       group:
         # El Psy Congroo
-        - 707408530
+        - 296796793
 
 # 消息应答
 answer:
@@ -35,9 +32,9 @@ answer:
     reply:
       - type: Plain
         text: 新的一天也要加油鸭
-  - re: 晚安|哦呀斯密
-    api: https://el-bot-api.vercel.app/api/wanan
-    reply: ${data[0]}
+  - re: 晚安|哦呀斯密|你妈个批
+    api: https://soul-soup.fe.workers.dev
+    reply: ${data['title']}
   - at: true
     includes: 在吗
     reply: 我在
@@ -47,3 +44,14 @@ answer:
     reply:
       - type: Image
         url: https://images.weserv.nl/?url=https://bing.ioliu.cn/v1/rand
+
+
+setu:
+  url: https://api.lolicon.app/setu/
+  proxy: https://images.weserv.nl/?url=
+  match:
+    - is: 不够色
+    - includes:
+        - 来点
+        - 色图
+  reply: 让我找找

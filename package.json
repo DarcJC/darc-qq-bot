@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/ElpsyCN/el-bot-template#readme",
   "dependencies": {
+    "@el-bot/plugin-setu": "^0.0.12",
     "el-bot": "^0.6.2"
   },
   "devDependencies": {

@@ -84,3 +84,6 @@ typings/
 .cache
 
 dist
+
+# mirai_http_setting.yml
+el/mirai_http_setting.yml
