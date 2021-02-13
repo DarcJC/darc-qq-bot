@@ -1,0 +1,15 @@
+{
+    "name": "destiny",
+    "private": true,
+    "version": "0.0.1",
+    "description": "命运(不是",
+    "el-bot": {
+      "db": true
+    },
+    "author": {
+      "name": "Darc",
+      "url": "https://blog.darc.icu",
+      "email": "i@darc.pro"
+    }
+}
+  

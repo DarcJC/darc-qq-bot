@@ -1,4 +1,5 @@
-master: 250967086
+master:
+  - 250967086
 
 plugins:
   default:
@@ -9,7 +10,7 @@ plugins:
   official:
     - setu
   custom:
-    - ./bot/test
+    - ./bot/destiny
 
 rss:
   - name: Darc的博客
