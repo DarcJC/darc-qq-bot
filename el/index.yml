@@ -23,7 +23,6 @@ rss:
       - 时间：${item.updated}
     target:
       group:
-        # El Psy Congroo
         - 296796793
 
 # 消息应答
@@ -44,6 +43,9 @@ answer:
     reply:
       - type: Image
         url: https://images.weserv.nl/?url=https://bing.ioliu.cn/v1/rand
+  - at: true
+    includes: 我是
+    reply: 我是你爹
 
 
 setu:

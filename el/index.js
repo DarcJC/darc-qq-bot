@@ -4,13 +4,12 @@ const { utils } = require("el-bot");
 
 module.exports = {
   qq: parseInt(process.env.BOT_QQ),
-  // 你可以直接解析 mirai-api-http 的配置
   setting: utils.config.parse(
     resolve(__dirname, "./mirai_http_setting.yml")
   ),
   db: {
     // 默认关闭
-    enable: false,
+    enable: Boolean(process.env.BOT_DB_ENABLE),
     uri: process.env.BOT_DB_URI,
     analytics: true,
   },
