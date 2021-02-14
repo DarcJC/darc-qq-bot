@@ -16,7 +16,7 @@
     "start:mcl": "el start mcl",
     "install:mirai": "el install mirai",
     "lint": "eslint --fix . && prettier --write .",
-    "build": "tsc && cp el/*.yml dist/el/"
+    "build": "tsc && cp el/*.yml dist/el/ && cp bot/plugins/*/** dist/bot/plugins"
   },
   "repository": {
     "type": "git",
