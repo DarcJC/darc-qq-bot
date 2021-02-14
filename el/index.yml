@@ -7,6 +7,7 @@ plugins:
     - search
     - rss
     - nbnhhsh
+    - forward
   official:
     - setu
   custom:
@@ -60,3 +61,14 @@ setu:
         - 来点
         - 色图
   reply: 让我找找
+
+
+forward:
+  - listen:
+      friend: []
+      group:
+        - 866368474
+    target:
+      group:
+        - 296796793
+        - 941429748

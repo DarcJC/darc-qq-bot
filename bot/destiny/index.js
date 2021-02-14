@@ -16,10 +16,13 @@ module.exports = (ctx) => {
     mirai.api.sendGroupMessage(text, operator.group.id);
   });
 
-  mirai.on("message", async (msg) => {
+  mirai.on("message", (msg) => {
     if (msg.plain.startsWith('!')) {
       // 将文本作为命令处理
       bot.parse(msg.plain, {
+        msg,
+        bot: ctx,
+        permission: msg.sender.permission,
         reply: (m) => {
           msg.reply(m, true)
         },
@@ -30,13 +33,11 @@ module.exports = (ctx) => {
               user_id.push(item.target)
             }
           }
-          console.log(user_id)
           for (target of user_id) {
             mirai.api.mute(msg.sender.group.id, target, d)
           }
           return user_id.length
         },
-        permission: msg.sender.permission,
       })
     }
   });
