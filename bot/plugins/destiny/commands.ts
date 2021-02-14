@@ -180,7 +180,7 @@ async function getSteamIDByUid(uid: string) {
     const doc = await SteamBinding.findOne({
         uid,
     })
-    return doc['steamid'] || null
+    return doc ? doc['steamid'] : null
 }
 
 
