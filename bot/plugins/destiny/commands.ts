@@ -85,7 +85,6 @@ bot
         if (!platform) {
             platform = 'uplay'
         }
-        console.log(region, platform)
         try {
             const id = await r6api.getId(platform, nickname)
             if (id.length === 0) {
@@ -101,7 +100,7 @@ bot
 ==============
 游戏时间 ${stats.pve.general.playtime + stats.pvp.general.playtime}
 PVP场数 ${stats.pvp.general.matches}
-排位分数 ${ rank.length === 0 && rank[0].seasons["20"] === undefined ? '当前赛季没有排位记录' : rank[0].seasons["20"].regions[region].current.name}(${ rank.length === 0 && rank[0].seasons["20"] === undefined ? '当前赛季没有排位记录' : rank[0].seasons[region].regions['apac'].current.mmr})
+排位分数 ${ rank.length === 0 ? '当前赛季没有排位记录' : rank[0].seasons["20"].regions[region].current.name}(${ rank.length === 0 ? '当前赛季没有排位记录' : rank[0].seasons["20"].regions[region].current.mmr})
 `)
         } catch(e) {
             meta.reply(`调用接口时发生错误:\n${e}`)
