@@ -1,13 +1,14 @@
-const { default: Bot } = require("el-bot");
-
-const {commander, bot} = require("./commands")
+import Bot from "el-bot";
+import { MessageChain } from "mirai-ts/dist/types/message-type";
+import { Member } from "mirai-ts/dist/types/contact"
+import { bot } from "./commands";
 
 
 /**
  *
  * @param {Bot} ctx
  */
-module.exports = (ctx) => {
+export default (ctx: Bot) => {
   const mirai = ctx.mirai;
 
   mirai.on("GroupRecallEvent", ({ operator, messageId, authorId }) => {
@@ -19,22 +20,26 @@ module.exports = (ctx) => {
   mirai.on("message", (msg) => {
     if (msg.plain.startsWith('!')) {
       // 将文本作为命令处理
+      let permission: String = null
+      if (msg.sender['permission']) permission = msg.sender['permission']
       bot.parse(msg.plain, {
-        'msg': msg,
+        msg,
         bot: ctx,
-        permission: msg.sender.permission,
-        reply: (m) => {
+        permission,
+        reply: (m: string | MessageChain) => {
           if (msg.type == 'GroupMessage') mirai.api.sendGroupMessage(m, msg.sender.group.id, msg.messageChain[0].id)
           else if (msg.type == 'FriendMessage' || msg.type == 'TempMessage') msg.reply(m, true)
         },
-        mute_msg: (d) => {
-          user_id = []
-          for (item of msg.messageChain) {
+        mute_msg: (d: number) => {
+          if ((<Member>msg.sender).group == undefined) return
+          msg.sender = (<Member>msg.sender)
+          const user_id: number[] = []
+          for (const item of msg.messageChain) {
             if (item.type == 'At') {
               user_id.push(item.target)
             }
           }
-          for (target of user_id) {
+          for (const target of user_id) {
             mirai.api.mute(msg.sender.group.id, target, d)
           }
           return user_id.length

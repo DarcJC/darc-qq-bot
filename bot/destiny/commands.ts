@@ -1,7 +1,6 @@
 
-const bot = require('bot-commander');
-const {SteamBinding} = require('./steam.schema')
-
+import { SteamBinding } from './steam.schema';
+export const bot = require('bot-commander');
 
 
 bot
@@ -28,8 +27,8 @@ bot
     })
 
 function getUserIDFromAtMessage(msg) {
-    user_id = []
-    for (item of msg.messageChain) {
+    const user_id = []
+    for (const item of msg.messageChain) {
         if (item.type == 'At') {
             user_id.push(item.target)
         }
@@ -42,8 +41,8 @@ bot
     .alias('!解除禁言')
     .description('解除对目标用户的禁言')
     .action( (meta) => {
-        res = getUserIDFromAtMessage(meta.msg)
-        for (i of res) {
+        const res = getUserIDFromAtMessage(meta.msg)
+        for (const i of res) {
             meta.bot.mirai.api.unmute(meta.msg.sender.group.id, i)
         }
     })
@@ -65,8 +64,3 @@ bot
         await doc.save()
         meta.reply(`绑定成功, 你目前的SteamID为: ${doc.uid}`)
     })
-
-
-exports.commander = bot
-
-exports.bot = bot

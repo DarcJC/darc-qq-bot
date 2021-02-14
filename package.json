@@ -1,9 +1,9 @@
 {
-  "name": "el-bot-template",
+  "name": "darc-qq-bot",
   "version": "0.1.1",
-  "description": "el-bot 的快速启动模版",
+  "description": "一个奇奇怪怪的QQ机器人",
   "private": true,
-  "main": "bot/index.js",
+  "main": "bot/index.ts",
   "mcl": {
     "folder": "mcl"
   },
@@ -15,7 +15,8 @@
     "start:bot": "el start bot",
     "start:mcl": "el start mcl",
     "install:mirai": "el install mirai",
-    "lint": "eslint --fix . && prettier --write ."
+    "lint": "eslint --fix . && prettier --write .",
+    "build": "tsc && cp el/*.yml dist/el/"
   },
   "repository": {
     "type": "git",
@@ -33,15 +34,19 @@
   "homepage": "https://github.com/ElpsyCN/el-bot-template#readme",
   "dependencies": {
     "@el-bot/plugin-setu": "^0.0.12",
+    "@octokit/webhooks-definitions": "^3.60.0",
+    "@types/node": "^14.14.27",
     "bot-commander": "^1.1.2",
     "el-bot": "^0.6.2",
-    "mongoose": "^5.11.16"
+    "mongoose": "^5.11.16",
+    "typescript": "^4.1.5"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
     "eslint": "^7.17.0",
     "eslint-config-prettier": "^7.1.0",
     "nodemon": "^2.0.7",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "ts-node": "^9.1.1"
   }
 }

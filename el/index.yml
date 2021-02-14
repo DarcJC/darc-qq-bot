@@ -11,7 +11,7 @@ plugins:
   official:
     - setu
   custom:
-    - ./bot/destiny
+    - ./dist/bot/destiny
 
 rss:
   - name: Darc的博客
@@ -72,3 +72,9 @@ forward:
       group:
         - 296796793
         - 941429748
+
+
+search-image:
+  token: 4455c183d8719001a5f8976fd8a500cc3930c85f
+  options:
+    results: 3

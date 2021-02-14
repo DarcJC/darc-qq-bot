@@ -19,6 +19,6 @@ module.exports = {
     enable: true,
     path: "/webhook",
     port: 7777,
-    secret: process.env.BOT_WEBHOOK_SECRET | 'default_webhook_secret',
+    secret: process.env.BOT_WEBHOOK_SECRET as any | 'default_webhook_secret',
   },
 };

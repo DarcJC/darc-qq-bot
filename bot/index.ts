@@ -2,6 +2,7 @@ const Bot = require("el-bot");
 const el = require("../el");
 
 const bot = new Bot(el);
+
 bot.mirai.api.axios.interceptors.response.use(
     res => {
         return res
