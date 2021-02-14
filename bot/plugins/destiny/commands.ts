@@ -88,6 +88,7 @@ bot
     .description('查询彩六战绩')
     .action( async (meta: CommandMeta, nickname: string, region?: Region, platform?: Platform) => {
         nickname = nickname.trim()
+        nickname = encodeURI(nickname)
         if (!region) {
             region = 'apac'
         }
@@ -124,6 +125,7 @@ bot
     .description('查询命运2信息')
     .action( async (meta: CommandMeta, id: string) => {
         id = id.trim()
+        id = encodeURI(id)
         try {
             const search_result = await destiny2api.searchDestinyPlayer(3, id)
             if (search_result.Response?.length === 0) {
