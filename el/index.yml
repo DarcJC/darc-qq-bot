@@ -54,7 +54,7 @@ answer:
 
 setu:
   url: https://api.lolicon.app/setu/
-  proxy: https://images.weserv.nl/?url=
+  # proxy: https://images.weserv.nl/?url=
   match:
     - is: 不够色
     - includes:
