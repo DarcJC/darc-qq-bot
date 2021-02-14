@@ -129,7 +129,7 @@ bot
         try {
             const search_result = await destiny2api.searchDestinyPlayer(3, id)
             if (search_result.Response?.length === 0) {
-                meta.reply(`无法由昵称「${id}查询到用户」`)
+                meta.reply(`无法由昵称「${id}」查询到用户`)
                 return
             }
             const membershipId = search_result.Response[0].membershipId
