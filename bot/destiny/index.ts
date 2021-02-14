@@ -1,7 +1,15 @@
 import Bot from "el-bot";
-import { MessageChain } from "mirai-ts/dist/types/message-type";
+import { MessageChain, ChatMessage } from "mirai-ts/dist/types/message-type";
 import { Member } from "mirai-ts/dist/types/contact"
 import { bot } from "./commands";
+
+export interface CommandMeta {
+  msg: ChatMessage
+  bot: Bot
+  permission: String | null
+  reply: Function
+  mute_msg: Function
+}
 
 
 /**
@@ -22,7 +30,7 @@ export default (ctx: Bot) => {
       // 将文本作为命令处理
       let permission: String = null
       if (msg.sender['permission']) permission = msg.sender['permission']
-      bot.parse(msg.plain, {
+      const meta: CommandMeta = {
         msg,
         bot: ctx,
         permission,
@@ -44,7 +52,8 @@ export default (ctx: Bot) => {
           }
           return user_id.length
         },
-      })
+      }
+      bot.parse(msg.plain, meta)
     }
   });
 };
