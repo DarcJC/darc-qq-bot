@@ -53,7 +53,7 @@ answer:
 
 
 setu:
-  url: https://api.lolicon.app/setu/
+  url: https://el-bot-api.vercel.app/api/setu/
   # proxy: https://images.weserv.nl/?url=
   match:
     - is: 不够色
