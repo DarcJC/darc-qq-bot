@@ -2,7 +2,7 @@ import Bot from "el-bot";
 import el from "../el";
 import mongoose, { mongo } from 'mongoose'
 
-const bot = new Bot(el);
+export const bot = new Bot(el);
 
 bot.mirai.api.axios.interceptors.response.use(
     res => {

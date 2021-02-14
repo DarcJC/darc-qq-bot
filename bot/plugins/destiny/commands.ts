@@ -13,7 +13,7 @@ const destiny2api = new Destiny2API({
 });
 
 import {CommandMeta} from './index'
-import {formatDateSemantic, parseDestinyClass, parseDestinyRace} from './utils'
+import {formatDateSemantic, parseDestinyClass, parseDestinyRace, getMembershipFromHardLinkedCredential} from './utils'
 
 bot
     .command('!help')
@@ -119,6 +119,27 @@ PVP场数 ${stats.pvp.general.matches}
     })
 
 
+function buildCharactersDesc(characters, profile) {
+        function buildCharacterDesc(character) {
+            const o = 
+`
+🌠${parseDestinyClass(character.classType)}(id:${character.characterId})，
+🎯它是一个 ${parseDestinyRace(character.raceType)}。
+✨该角色光等为 ${character.light}，
+🎈最后游玩时间是 ${formatDateSemantic(character.dateLastPlayed, "yyyyMMdd HH:mm:ss")}，
+⏰本赛季游玩时长为 ${parseInt(character.minutesPlayedThisSession) / 60}时 / ${parseInt(character.minutesPlayedTotal) / 60}时(总时长)，
+`
+            return o
+        }
+        let res = ""
+        for (const key of profile.characterIds) {
+            res += buildCharacterDesc(characters[key])
+            res += '※※※※※※※'
+        }
+        return res
+}
+
+
 bot
     .command('!d2s <昵称>')
     .alias('!命运2战绩')
@@ -137,25 +158,53 @@ bot
             const characters = res.Response.characters.data
             const profile = res.Response.profile.data
             // const profileCurrencies = res.Response.profileCurrencies
-            function buildCharactersDesc(characters, profile) {
-                function buildCharacterDesc(character) {
-                    const o = 
+            meta.reply(
 `
-🌠${parseDestinyClass(character.classType)}(id:${character.characterId})，
-🎯它是一个 ${parseDestinyRace(character.raceType)}。
-✨该角色光等为 ${character.light}，
-🎈最后游玩时间是 ${formatDateSemantic(character.dateLastPlayed, "yyyyMMdd HH:mm:ss")}，
-⏰本赛季游玩时长为 ${parseInt(character.minutesPlayedThisSession) / 60}时 / ${parseInt(character.minutesPlayedTotal) / 60}时(总时长)，
+守护者「${profile.userInfo.displayName}」，
+你的最后上线日期是 ${formatDateSemantic(profile.dateLastPlayed, "yyyyMMdd HH:mm:ss")}。
+==========
+当前赛季为【天选赛季(赛季代码:${profile.currentSeasonHash})】，
+赛季最高光等为 ${profile.currentSeasonRewardPowerCap}。
+==========
+你有 ${profile.characterIds.length} 个角色：\n
+${buildCharactersDesc(characters, profile)}
 `
-                    return o
-                }
-                let res = ""
-                for (const key of profile.characterIds) {
-                    res += buildCharacterDesc(characters[key])
-                    res += '※※※※※※※'
-                }
-                return res
-            }
+            )
+        } catch (e) {
+            meta.reply(`查询时发生错误:\n${e}`)
+        }
+    })
+
+
+async function getSteamIDByUid(uid: string) {
+    const doc = await SteamBinding.findOne({
+        uid,
+    })
+    return doc['steamid'] || null
+}
+
+
+bot
+    .command('!d2ss')
+    .alias('!命运2查询')
+    .description('通过绑定的SteamID查询命运2')
+    .action( async (meta: CommandMeta) => {
+        const steam_id = await getSteamIDByUid(String(meta.msg.sender.id))
+        if (steam_id === null) {
+            meta.reply('请先使用\n!steambind <Steam64位ID>\n绑定你的Steam！')
+            return
+        }
+        const res = await getMembershipFromHardLinkedCredential(steam_id)
+        if (res.ErrorCode !== 1) {
+            meta.reply(`无法找到你SteamID(${steam_id})绑定的棒鸡账号！`)
+            return
+        }
+        const membershipId = res.Response.membershipId
+        try {
+            const res = await destiny2api.getProfile(3, membershipId, [100, 200])
+            const characters = res.Response.characters.data
+            const profile = res.Response.profile.data
+            // const profileCurrencies = res.Response.profileCurrencies
             meta.reply(
 `
 守护者「${profile.userInfo.displayName}」，

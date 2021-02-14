@@ -1,4 +1,6 @@
-
+import {bot} from '../../index'
+import https from 'https'
+import {AxiosRequestConfig, AxiosResponse} from 'axios'
 
 /**
  * https://blog.csdn.net/qq_35079650/article/details/97271649
@@ -91,4 +93,29 @@ export function parseDestinyRace(type: number) {
       default:
           return '未知'
     }
+}
+
+const bungie_api = 'https://www.bungie.net/Platform'
+const api_key = process.env.BOT_BUNGIE_API_KEY
+const user_agent = https.globalAgent
+
+const promiseRequest = (options: AxiosRequestConfig) => {
+  return bot.mirai.api.axios.request(
+    options
+  )
+};
+
+/**
+ * 从SteamID获取绑定的MemberShipID
+ * @param steamid 64位的SteamID
+ */
+export async function getMembershipFromHardLinkedCredential(steamid: String) {
+  const data: AxiosRequestConfig = {
+    url: `${bungie_api}/User/GetMembershipFromHardLinkedCredential/SteamId/${steamid}/`,
+    method: 'GET',
+    headers: {
+      'X-API-Key': api_key,
+    }
+  }
+  return promiseRequest(data).then(res => res.data)
 }
