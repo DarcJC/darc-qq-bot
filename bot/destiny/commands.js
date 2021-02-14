@@ -19,7 +19,7 @@ bot
     .action( (meta, d) => {
         if (meta.permission == 'OWNER' || meta.permission == 'ADMINISTRATOR') {
             d = parseInt(d.trim())
-            if (d === NaN) {
+            if (d.isNaN()) {
                 meta.reply('禁言时长无效')
                 return
             }

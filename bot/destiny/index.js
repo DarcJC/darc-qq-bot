@@ -20,11 +20,12 @@ module.exports = (ctx) => {
     if (msg.plain.startsWith('!')) {
       // 将文本作为命令处理
       bot.parse(msg.plain, {
-        msg,
+        'msg': msg,
         bot: ctx,
         permission: msg.sender.permission,
         reply: (m) => {
-          msg.reply(m, true)
+          if (msg.type == 'GroupMessage') mirai.api.sendGroupMessage(m, msg.sender.group.id, msg.messageChain[0].id)
+          else if (msg.type == 'FriendMessage' || msg.type == 'TempMessage') msg.reply(m, true)
         },
         mute_msg: (d) => {
           user_id = []
