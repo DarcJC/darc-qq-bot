@@ -8,7 +8,7 @@ import { Region, Platform } from 'r6api.js'
 
 import {CommandMeta} from './index'
 import { stat } from 'node:fs';
-
+import { Mongoose } from 'mongoose';
 
 bot
     .command('!help')
@@ -59,17 +59,21 @@ bot
     .command('!steambind <Steam ID>')
     .alias('!绑定Steam')
     .description('绑定一个Steam账号')
-    .action( async (meta: CommandMeta, steam_id) => {
-        steam_id = parseInt(steam_id)
-        if (steam_id === NaN) {
-            meta.reply(`Steam ID: ${steam_id} 无效.`)
+    .action( async (meta: CommandMeta, steam_id: string) => {
+        try {
+            let doc = await SteamBinding.findOneAndUpdate({
+                uid: String(meta.msg.sender.id),
+            }, {
+                steamid: steam_id,
+            }, {
+                new: true,
+                upsert: true,
+            })
+            meta.reply(`绑定成功, 你目前的SteamID为: ${doc.steamid}`)
+        } catch(e) {
+            meta.reply(`发生错误:\n${e}`)
             return
         }
-        const doc = new SteamBinding()
-        doc.uid = meta.msg.sender.id
-        doc.steamid = steam_id
-        await doc.save()
-        meta.reply(`绑定成功, 你目前的SteamID为: ${doc.uid}`)
     })
 
 

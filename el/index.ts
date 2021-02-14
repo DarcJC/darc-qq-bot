@@ -2,7 +2,7 @@ require("dotenv").config();
 const { resolve } = require("path");
 const { utils } = require("el-bot");
 
-module.exports = {
+export default {
   qq: parseInt(process.env.BOT_QQ),
   setting: utils.config.parse(
     resolve(__dirname, "./mirai_http_setting.yml")
