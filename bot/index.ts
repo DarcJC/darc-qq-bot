@@ -27,6 +27,7 @@ mongoose.connect(process.env.BOT_DB_URI || "mongodb://localhost:27017/el-bot", {
 
 bot.logger.success(`成功连接到数据库「${mongoose.connection.name}」`)
 
+
 // bot.start((msg) => {
 //   if (bot.isDev) console.log(msg);
 // });

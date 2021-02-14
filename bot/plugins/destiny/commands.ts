@@ -6,9 +6,14 @@ import R6API from 'r6api.js'
 const r6api = new R6API(process.env.BOT_R6_EMAIL, process.env.BOT_R6_PASSWORD)
 import { Region, Platform } from 'r6api.js'
 
+// import { getProfile, searchDestinyPlayer, HttpClientConfig, BungieMembershipType } from 'bungie-api-ts/destiny2';
+import Destiny2API from 'node-destiny-2';
+const destiny2api = new Destiny2API({
+    key: process.env.BOT_BUNGIE_API_KEY,
+});
+
 import {CommandMeta} from './index'
-import { stat } from 'node:fs';
-import { Mongoose } from 'mongoose';
+import {formatDateSemantic, parseDestinyClass, parseDestinyRace} from './utils'
 
 bot
     .command('!help')
@@ -109,5 +114,59 @@ PVP场数 ${stats.pvp.general.matches}
         } catch(e) {
             meta.reply(`调用接口时发生错误:\n${e}`)
             return
+        }
+    })
+
+
+bot
+    .command('!d2s <昵称>')
+    .alias('!命运2战绩')
+    .description('查询命运2信息')
+    .action( async (meta: CommandMeta, id: string) => {
+        id = id.trim()
+        try {
+            const search_result = await destiny2api.searchDestinyPlayer(3, id)
+            if (search_result.Response?.length === 0) {
+                meta.reply(`无法由昵称「${id}查询到用户」`)
+                return
+            }
+            const membershipId = search_result.Response[0].membershipId
+            const res = await destiny2api.getProfile(3, membershipId, [100, 200])
+            const characters = res.Response.characters.data
+            const profile = res.Response.profile.data
+            // const profileCurrencies = res.Response.profileCurrencies
+            function buildCharactersDesc(characters, profile) {
+                function buildCharacterDesc(character) {
+                    const o = 
+`
+🌠${parseDestinyClass(character.classType)}(id:${character.characterId})，
+🎯它是一个 ${parseDestinyRace(character.raceType)}。
+✨该角色光等为 ${character.light}，
+🎈最后游玩时间是 ${formatDateSemantic(character.dateLastPlayed, "yyyyMMdd HH:mm:ss")}，
+⏰本赛季游玩时长为 ${parseInt(character.minutesPlayedThisSession) / 60}时 / ${parseInt(character.minutesPlayedTotal) / 60}时(总时长)，
+`
+                    return o
+                }
+                let res = ""
+                for (const key of profile.characterIds) {
+                    res += buildCharacterDesc(characters[key])
+                    res += '※※※※※※※'
+                }
+                return res
+            }
+            meta.reply(
+`
+守护者「${profile.userInfo.displayName}」，
+你的最后上线日期是 ${formatDateSemantic(profile.dateLastPlayed, "yyyyMMdd HH:mm:ss")}。
+==========
+当前赛季为【天选赛季(赛季代码:${profile.currentSeasonHash})】，
+赛季最高光等为 ${profile.currentSeasonRewardPowerCap}。
+==========
+你有 ${profile.characterIds.length} 个角色：\n
+${buildCharactersDesc(characters, profile)}
+`
+            )
+        } catch (e) {
+            meta.reply(`查询时发生错误:\n${e}`)
         }
     })
