@@ -27,6 +27,27 @@ bot
         }
     })
 
+function getUserIDFromAtMessage(msg) {
+    user_id = []
+    for (item of msg.messageChain) {
+        if (item.type == 'At') {
+            user_id.push(item.target)
+        }
+    }
+    return user_id
+}
+
+bot
+    .command('!unmute')
+    .alias('!解除禁言')
+    .description('解除对目标用户的禁言')
+    .action( (meta) => {
+        res = getUserIDFromAtMessage(meta.msg)
+        for (i of res) {
+            meta.bot.mirai.api.unmute(meta.msg.sender.group.id, i)
+        }
+    })
+
 
 bot
     .command('!steambind <Steam ID>')
