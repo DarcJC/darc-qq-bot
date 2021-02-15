@@ -1,6 +1,6 @@
 import Bot from "el-bot";
 import el from "../el";
-import mongoose, { mongo } from 'mongoose'
+// import mongoose, { mongo } from 'mongoose'
 
 export const bot = new Bot(el);
 
@@ -16,16 +16,16 @@ bot.mirai.api.axios.interceptors.response.use(
 
 bot.start()
 
-bot.logger.info("正在连接数据库...")
+// bot.logger.info("正在连接数据库...")
 
-mongoose.connect(process.env.BOT_DB_URI || "mongodb://localhost:27017/el-bot", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-})
+// mongoose.connect(process.env.BOT_DB_URI || "mongodb://localhost:27017/el-bot", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     useFindAndModify: false,
+//     useCreateIndex: true,
+// })
 
-bot.logger.success(`成功连接到数据库「${mongoose.connection.name}」`)
+// bot.logger.success(`成功连接到数据库「${mongoose.connection.name}」`)
 
 
 // bot.start((msg) => {

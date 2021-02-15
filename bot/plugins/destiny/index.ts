@@ -16,7 +16,7 @@ export interface CommandMeta {
  *
  * @param {Bot} ctx
  */
-export default (ctx: Bot) => {
+export default async (ctx: Bot) => {
   const mirai = ctx.mirai;
 
   mirai.on("GroupRecallEvent", ({ operator, messageId, authorId }) => {
