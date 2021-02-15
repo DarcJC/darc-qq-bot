@@ -39,9 +39,9 @@ answer:
   - re: 晚安|哦呀斯密|你妈个批
     api: https://soul-soup.fe.workers.dev
     reply: ${data['title']}
-  - at: true
-    includes: 在吗
-    reply: 我在
+  - includes: 舔狗
+    api: https://api.ixiaowai.cn/tgrj/index.php
+    reply: ${data}
   - includes:
       - bing
       - 壁纸
@@ -79,3 +79,6 @@ search-image:
   token: 4455c183d8719001a5f8976fd8a500cc3930c85f
   options:
     results: 3
+
+awesome_api:
+  version: 1

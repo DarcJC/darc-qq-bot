@@ -3,6 +3,7 @@ export interface AwesomeApiConfig {
     JDApiKey: String
     NewsFeed: Array<number>
     NewsFeedCron: Array<string>
+    version: number
 }
 
 const config: AwesomeApiConfig = {
@@ -11,6 +12,7 @@ const config: AwesomeApiConfig = {
     NewsFeedCron: [
         '0 0 6-18 * * ?',
     ],
+    version: 1,
 }
 
 export default config
