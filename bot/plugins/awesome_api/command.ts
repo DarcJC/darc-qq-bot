@@ -54,3 +54,31 @@ ${(()=>{
             meta.msg.reply(`发生错误:\n${e}`, true)
         }
     })
+
+bot
+    .command('!公交 <公交线路>')
+    .description('查询给定的公交车线路')
+    .action( async (meta: CommandMeta, bus: String) => {
+        try {
+            const city_name = await getCityById(String(meta.msg.sender.id))
+            if (!city_name) {
+                meta.msg.reply('你还没有绑定城市！\n请使用 !绑定城市 <城市名> 为自己绑定一个城市。', true)
+                return
+            }
+            const res = await meta.jdwxApi.getBusRoute(city_name, bus)
+            let msg = '查询结果：\n'
+            for (const i of res) {
+                msg += `\n${i.transitno}(${i.startstation}👉${i.endstation}，${i.timetable})\n\n路线：\n${(()=>{
+                    let m = '※ '
+                    for (const j of i.list) {
+                        m += `${j.station} -|- `
+                    }
+                    m += '※ \n'
+                    return m
+                })()}`
+            }
+            meta.msg.reply(msg, true)
+        } catch (e) {
+            meta.msg.reply(`发生错误:\n${e}`, true)
+        }
+    })

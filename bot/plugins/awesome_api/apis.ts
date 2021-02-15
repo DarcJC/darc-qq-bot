@@ -58,6 +58,26 @@ export interface IJDwxNews {
     }] // 新闻列表
 }
 
+export interface IBusRoute {
+    transitno: String // 线路编号
+    startstation: String // 起始站
+    endstation: String // 终点站
+    starttime: String // 首班时间
+    endtime: String // 尾班时间
+    price: String // 票价(起始)
+    maxprice: String // 最高票价
+    buscompany: String // 巴士公司
+    timetable: String // 时间表
+    updatetime: String // 更新时间
+    list: [{
+        sequenceno: number // 站点编号 从1开始
+        station: String // 站点名称
+        lat: String // 纬度
+        lng: String // 经度
+        subway?: String // 地铁站 (如果有)
+    }]
+}
+
 export class JDWxApi {
 
     readonly api_key: String
@@ -92,6 +112,10 @@ export class JDWxApi {
         return res.data.result.result
     }
 
+    /**
+     * 获取目标频道的新闻
+     * @param {NewsChannel} channel
+     */
     async getNewsFromChannel(channel: NewsChannel): Promise<IJDwxNews> {
         const channel_encoded = encodeURI(channel)
         const res = await this.axiso.request({
@@ -103,6 +127,27 @@ export class JDWxApi {
         }
         if (res.data.result.status != 0) {
             throw '查询的频道不存在！';
+        }
+        return res.data.result.result
+    }
+
+    /**
+     * 获取公交车信息
+     * @param city_name 城市名
+     * @param bus 公交线名
+     */
+    async getBusRoute(city_name: String, bus: String): Promise<[IBusRoute]> {
+        city_name = encodeURI(String(city_name))
+        bus = encodeURI(String(bus))
+        const res = await this.axiso.request({
+            url: `${this.base_url}/jisuapi/transitLine?city=${city_name}&transitno=${bus}&appkey=${this.api_key}`,
+            method: 'GET',
+        })
+        if (res.data.code != "10000") {
+            throw '公交接口调用超出每日限制！';
+        }
+        if (res.data.result.status != 0) {
+            throw '查询的城市/公交线路不存在！';
         }
         return res.data.result.result
     }
