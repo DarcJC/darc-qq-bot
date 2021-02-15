@@ -32,9 +32,9 @@ export default async (ctx: Bot) => {
         schedule.scheduleJob(element, async () => {
             try {
                 const news = await jdwxApi.getNewsFromChannel('头条')
-                let msg = ''
+                let msg = '头条新闻：\n'
                 for (let i in news.list) {
-                    msg += `${1+i}、${news.list[i].title}(来源：${news.list[i].src})[${news.list[i].weburl}]\n`
+                    msg += `${1+i}、${news.list[i].title}(来源：${news.list[i].src})[${news.list[i].weburl}]\n\n`
                 }
                 config.NewsFeed.forEach(feeder => {
                     mirai.api.sendGroupMessage(msg, feeder)
