@@ -82,3 +82,21 @@ bot
             meta.msg.reply(`发生错误:\n${e}`, true)
         }
     })
+
+bot
+    .command('!热搜')
+    .description('查询热搜榜')
+    .action( async (meta: CommandMeta) => {
+        try {
+            const res = await meta.jdwxApi.getHotWord()
+            meta.msg.reply(`热搜榜：\n${(()=>{
+                let msg = ''
+                for (let i of res) {
+                    msg += `${i.num}、${i.name}(${i.trend === 'fair' ? '~' : i.trend === 'rise' ? '👆' : '👇'})\n`
+                }
+                return msg
+            })()}`, true)
+        } catch (e) {
+            meta.msg.reply(`发生错误:\n${e}`, true)
+        }
+    })

@@ -78,6 +78,15 @@ export interface IBusRoute {
     }]
 }
 
+export type HotWordTrend = 'rise' | 'fall' | 'fair'
+
+export interface IHotWord {
+    num: String  // 排名 从1开始
+    level: String // 热词级别
+    trend: HotWordTrend // 趋势 rise为升 fail为降低 fair为持平
+    name: String // 热词名称
+}
+
 export class JDWxApi {
 
     readonly api_key: String
@@ -150,6 +159,17 @@ export class JDWxApi {
             throw '查询的城市/公交线路不存在！';
         }
         return res.data.result.result
+    }
+
+    async getHotWord(): Promise<[IHotWord]> {
+        const res = await this.axiso.request({
+            url: `${this.base_url}/showapi/rcInfo?typeId=1&appkey=${this.api_key}`,
+            method: 'GET',
+        })
+        if (res.data.code != "10000") {
+            throw '热词接口调用超出每日限制！';
+        }
+        return res.data.result.showapi_res_body.list
     }
 
 }
