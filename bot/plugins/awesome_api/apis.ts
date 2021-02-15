@@ -41,6 +41,23 @@ export interface IJDwxWeather {
     }
 }
 
+export type NewsChannel = '头条' | '新闻' | '军事' | '科技'
+
+export interface IJDwxNews {
+    channel: NewsChannel // 频道
+    num: String // 数量
+    list: [{
+        title: String // 新闻标题
+        time: String // 发布时间
+        src: String // 消息来源
+        category: String // 新闻类型板块
+        pic: String // 封面图地址
+        content: String // 内容
+        url: String // 移动端网址
+        weburl: String // Web网址
+    }] // 新闻列表
+}
+
 export class JDWxApi {
 
     readonly api_key: String
@@ -71,6 +88,21 @@ export class JDWxApi {
         }
         if (res.data.result.status != 0) {
             throw '查询的城市不存在！';
+        }
+        return res.data.result.result
+    }
+
+    async getNewsFromChannel(channel: NewsChannel): Promise<IJDwxNews> {
+        const channel_encoded = encodeURI(channel)
+        const res = await this.axiso.request({
+            url: `${this.base_url}/jisuapi/get?channel=${channel_encoded}&num=10&start=0&appkey=${this.api_key}`,
+            method: 'GET',
+        })
+        if (res.data.code != "10000") {
+            throw '新闻接口调用超出每日限制！';
+        }
+        if (res.data.result.status != 0) {
+            throw '查询的频道不存在！';
         }
         return res.data.result.result
     }
