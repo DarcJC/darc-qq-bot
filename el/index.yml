@@ -12,6 +12,7 @@ plugins:
     - setu
   custom:
     - ./bot/plugins/destiny
+    - ./bot/plugins/awesome_api
 
 rss:
   - name: Darc的博客

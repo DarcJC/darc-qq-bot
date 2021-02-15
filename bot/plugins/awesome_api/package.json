@@ -1,0 +1,15 @@
+{
+    "name": "awesome_api",
+    "private": true,
+    "version": "0.0.1",
+    "description": "神奇API",
+    "el-bot": {
+      "db": true
+    },
+    "author": {
+      "name": "Darc",
+      "url": "https://blog.darc.icu",
+      "email": "i@darc.pro"
+    }
+}
+  
