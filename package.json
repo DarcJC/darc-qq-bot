@@ -1,6 +1,6 @@
 {
   "name": "darc-qq-bot",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "一个奇奇怪怪的QQ机器人",
   "private": true,
   "main": "bot/index.ts",

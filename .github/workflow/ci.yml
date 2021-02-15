@@ -1,14 +1,26 @@
-name: Deploy
+name: Release
 on:
   push:
-    branches:
-      - master
+    tags:
+      - "v*"
 jobs:
-  qwq:
+  build:
+    name: Create Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.1
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-        persist-credentials: false
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
 

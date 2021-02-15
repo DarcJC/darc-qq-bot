@@ -56,4 +56,8 @@ export default async (ctx: Bot) => {
       bot.parse(msg.plain, meta)
     }
   });
+
+  mirai.on("BotInvitedJoinGroupRequestEvent", (evt) => {
+    console.log(evt)
+  })
 };
