@@ -82,3 +82,5 @@ search-image:
 
 awesome_api:
   version: 1
+  NewsFeedCron:
+    - '0 0 7 * * ?'
