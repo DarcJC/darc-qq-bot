@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/ElpsyCN/el-bot-template#readme",
   "dependencies": {
-    "@el-bot/plugin-setu": "^0.0.12",
+    "@el-bot/plugin-setu": "^0.2.0",
     "@octokit/webhooks-definitions": "^3.60.0",
     "@types/node": "^16.4.10",
     "bot-commander": "^1.1.2",
