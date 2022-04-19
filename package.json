@@ -35,7 +35,7 @@
   "dependencies": {
     "@el-bot/plugin-setu": "^0.0.12",
     "@octokit/webhooks-definitions": "^3.60.0",
-    "@types/node": "^16.4.10",
+    "@types/node": "^17.0.25",
     "bot-commander": "^1.1.2",
     "el-bot": "^0.8.0-alpha.5",
     "mongoose": "^5.11.16",
